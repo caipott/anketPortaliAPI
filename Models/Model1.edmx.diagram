@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9191c099e3bf4558a6673c12e54845cb" Name="Diagram1" ZoomLevel="74" >
+        <EntityTypeShape EntityType="Model1.survey" Width="1.5" PointX="0.625" PointY="3.25" />
+        <EntityTypeShape EntityType="Model1.questions" Width="1.5" PointX="4.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.questions_choices" Width="1.5" PointX="4.125" PointY="5.25" />
+        <EntityTypeShape EntityType="Model1.responses" Width="1.5" PointX="4.125" PointY="2.75" />
+        <EntityTypeShape EntityType="Model1.user" Width="1.5" PointX="0.625" PointY="0.5" />
+        <AssociationConnector Association="Model1.surveyuser" />
+        <AssociationConnector Association="Model1.surveyquestions_choices" />
+        <AssociationConnector Association="Model1.questionsresponses" />
+        <AssociationConnector Association="Model1.responsesquestions_choices" />
+        <AssociationConnector Association="Model1.questions_choicesquestions" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="surveySet" EntityType="Model1.survey" />
+          <EntitySet Name="questionsSet" EntityType="Model1.questions" />
+          <EntitySet Name="questions_choicesSet" EntityType="Model1.questions_choices" />
+          <EntitySet Name="responsesSet" EntityType="Model1.responses" />
+          <EntitySet Name="userSet" EntityType="Model1.user" />
+          <AssociationSet Name="surveyuser" Association="Model1.surveyuser">
+            <End Role="survey" EntitySet="surveySet" />
+            <End Role="user" EntitySet="userSet" />
+          </AssociationSet>
+          <AssociationSet Name="surveyquestions_choices" Association="Model1.surveyquestions_choices">
+            <End Role="survey" EntitySet="surveySet" />
+            <End Role="questions_choices" EntitySet="questions_choicesSet" />
+          </AssociationSet>
+          <AssociationSet Name="questionsresponses" Association="Model1.questionsresponses">
+            <End Role="questions" EntitySet="questionsSet" />
+            <End Role="responses" EntitySet="responsesSet" />
+          </AssociationSet>
+          <AssociationSet Name="responsesquestions_choices" Association="Model1.responsesquestions_choices">
+            <End Role="responses" EntitySet="responsesSet" />
+            <End Role="questions_choices" EntitySet="questions_choicesSet" />
+          </AssociationSet>
+          <AssociationSet Name="questions_choicesquestions" Association="Model1.questions_choicesquestions">
+            <End Role="questions_choices" EntitySet="questions_choicesSet" />
+            <End Role="questions" EntitySet="questionsSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="survey">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Model1.surveyuser" FromRole="survey" ToRole="user" />
+          <NavigationProperty Name="questions_choices" Relationship="Model1.surveyquestions_choices" FromRole="survey" ToRole="questions_choices" />
+        </EntityType>
+        <EntityType Name="questions">
+          <Key>
+            <PropertyRef Name="question_id" />
+          </Key>
+          <Property Name="question_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="is_required" Type="String" Nullable="false" />
+          <NavigationProperty Name="responses" Relationship="Model1.questionsresponses" FromRole="questions" ToRole="responses" />
+          <NavigationProperty Name="questions_choices" Relationship="Model1.questions_choicesquestions" FromRole="questions" ToRole="questions_choices" />
+        </EntityType>
+        <EntityType Name="questions_choices">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="text" Type="String" Nullable="false" />
+          <Property Name="question_id" Type="String" Nullable="false" />
+          <Property Name="choice_id" Type="String" Nullable="false" />
+          <NavigationProperty Name="survey" Relationship="Model1.surveyquestions_choices" FromRole="questions_choices" ToRole="survey" />
+          <NavigationProperty Name="responses" Relationship="Model1.responsesquestions_choices" FromRole="questions_choices" ToRole="responses" />
+          <NavigationProperty Name="questions" Relationship="Model1.questions_choicesquestions" FromRole="questions_choices" ToRole="questions" />
+        </EntityType>
+        <EntityType Name="responses">
+          <Key>
+            <PropertyRef Name="response_id" />
+          </Key>
+          <Property Name="response_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="answer" Type="String" Nullable="false" />
+          <Property Name="user_id" Type="String" Nullable="false" />
+          <Property Name="question_id" Type="String" Nullable="false" />
+          <NavigationProperty Name="questions" Relationship="Model1.questionsresponses" FromRole="responses" ToRole="questions" />
+          <NavigationProperty Name="questions_choices" Relationship="Model1.responsesquestions_choices" FromRole="responses" ToRole="questions_choices" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+          <Property Name="admin" Type="String" Nullable="false" />
+          <NavigationProperty Name="survey" Relationship="Model1.surveyuser" FromRole="user" ToRole="survey" />
+        </EntityType>
+        <Association Name="surveyuser">
+          <End Type="Model1.survey" Role="survey" Multiplicity="1" />
+          <End Type="Model1.user" Role="user" Multiplicity="*" />
+        </Association>
+        <Association Name="surveyquestions_choices">
+          <End Type="Model1.survey" Role="survey" Multiplicity="1" />
+          <End Type="Model1.questions_choices" Role="questions_choices" Multiplicity="*" />
+        </Association>
+        <Association Name="questionsresponses">
+          <End Type="Model1.questions" Role="questions" Multiplicity="1" />
+          <End Type="Model1.responses" Role="responses" Multiplicity="*" />
+        </Association>
+        <Association Name="responsesquestions_choices">
+          <End Type="Model1.responses" Role="responses" Multiplicity="1" />
+          <End Type="Model1.questions_choices" Role="questions_choices" Multiplicity="*" />
+        </Association>
+        <Association Name="questions_choicesquestions">
+          <End Type="Model1.questions_choices" Role="questions_choices" Multiplicity="1" />
+          <End Type="Model1.questions" Role="questions" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
